@@ -63,18 +63,22 @@ func main() {
 		if string(os.Args[1]) == "-v" || string(os.Args[1]) == "-version" || string(os.Args[1]) == "/v" {
 			fmt.Println("*****urlChecker Version 0.1*****")
 		} else {
-			content, err := ioutil.ReadFile(os.Args[1])
-			if err != nil {
-				log.Fatal(err)
+			i := 1
+			for i+1 <= len(os.Args) {
+				content, err := ioutil.ReadFile(os.Args[i])
+				i++
+				if err != nil {
+					log.Fatal(err)
 
+				}
+
+				textContent := string(content)
+
+				fmt.Println(">>  UrlChecker is working now!  <<")
+				fmt.Println("--------------------------------------------------------------------------------------------------")
+
+				checkURL(extractURL(textContent))
 			}
-
-			textContent := string(content)
-
-			fmt.Println(">>  UrlChecker is working now!  <<")
-			fmt.Println("--------------------------------------------------------------------------------------------------")
-
-			checkURL(extractURL(textContent))
 		}
 
 	}
