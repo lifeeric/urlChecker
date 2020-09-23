@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 
 	"mvdan.cc/xurls/v2"
 )
@@ -16,25 +17,47 @@ func extractURL(str string) []string {
 }
 
 func checkURL(urls []string) {
+
+	var wg sync.WaitGroup
+	wg.Add(len(urls))
+
 	for _, v := range urls {
-		resp, err := http.Get(v)
-		if err != nil {
-			print(err.Error())
-		} else {
-			fmt.Println(string(resp.StatusCode) + resp.Status)
-		}
+		go func(v string) {
+			defer wg.Done()
+			resp, err := http.Head(v)
+			if err != nil {
+				//print(err.Error())
+				fmt.Println("NO RESPONCE!")
+			} else {
+
+				switch code := resp.StatusCode; code {
+				case 200:
+					fmt.Println(v + ": GOOD!")
+				case 400, 404:
+					fmt.Println(v + ": BAD!")
+				default:
+					fmt.Println(v + ": UNKNOWN!")
+
+				}
+
+			}
+		}(v)
+
 	}
+
+	wg.Wait()
 }
 
 func main() {
 	content, err := ioutil.ReadFile("urls.txt")
 	if err != nil {
 		log.Fatal(err)
+
 	}
 
 	textContent := string(content)
-	fmt.Println(textContent)
 
+	fmt.Println("UrlChecker is working now! ")
 	fmt.Println("--------------------------------------------")
 
 	checkURL(extractURL(textContent))
