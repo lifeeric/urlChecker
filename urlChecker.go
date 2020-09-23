@@ -31,13 +31,20 @@ func checkURL(urls []string) {
 				fmt.Println("NO RESPONCE!")
 			} else {
 
+				var (
+					greenC = "\033[1;32m%s\033[0m"
+					redC   = "\033[1;31m%s\033[0m"
+					grayC  = "\033[1;30m%s\033[0m"
+				)
 				switch code := resp.StatusCode; code {
 				case 200:
-					fmt.Println(v + ": GOOD!")
+					fmt.Printf(greenC, v+": GOOD!\n")
+
 				case 400, 404:
-					fmt.Println(v + ": BAD!")
+					fmt.Printf(redC, v+": BAD!\n")
+
 				default:
-					fmt.Println(v + ": UNKNOWN!")
+					fmt.Printf(grayC, v+": UNKNOWN!\n")
 
 				}
 
@@ -62,8 +69,8 @@ func main() {
 
 		textContent := string(content)
 
-		fmt.Println("UrlChecker is working now! ")
-		fmt.Println("--------------------------------------------------------------------------------")
+		fmt.Println(">>  UrlChecker is working now!  <<")
+		fmt.Println("--------------------------------------------------------------------------------------------------")
 
 		checkURL(extractURL(textContent))
 
