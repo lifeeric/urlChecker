@@ -47,10 +47,8 @@ func checkURL(urls []string) {
 					fmt.Printf(grayC, v+": UNKNOWN!\n")
 
 				}
-
 			}
 		}(v)
-
 	}
 
 	wg.Wait()
@@ -59,20 +57,25 @@ func checkURL(urls []string) {
 func main() {
 	if len(os.Args) == 1 {
 		fmt.Println("help/usage message: To run this program, please pass an argument to it,i.e.: go run urlChecker.go urls.txt")
+
 	} else {
 
-		content, err := ioutil.ReadFile(os.Args[1])
-		if err != nil {
-			log.Fatal(err)
+		if string(os.Args[1]) == "-v" || string(os.Args[1]) == "-version" || string(os.Args[1]) == "/v" {
+			fmt.Println("*****urlChecker Version 0.1*****")
+		} else {
+			content, err := ioutil.ReadFile(os.Args[1])
+			if err != nil {
+				log.Fatal(err)
 
+			}
+
+			textContent := string(content)
+
+			fmt.Println(">>  UrlChecker is working now!  <<")
+			fmt.Println("--------------------------------------------------------------------------------------------------")
+
+			checkURL(extractURL(textContent))
 		}
-
-		textContent := string(content)
-
-		fmt.Println(">>  UrlChecker is working now!  <<")
-		fmt.Println("--------------------------------------------------------------------------------------------------")
-
-		checkURL(extractURL(textContent))
 
 	}
 }
