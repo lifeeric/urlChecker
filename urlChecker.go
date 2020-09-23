@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"sync"
 
 	"mvdan.cc/xurls/v2"
@@ -49,17 +50,22 @@ func checkURL(urls []string) {
 }
 
 func main() {
-	content, err := ioutil.ReadFile("urls.txt")
-	if err != nil {
-		log.Fatal(err)
+	if len(os.Args) == 1 {
+		fmt.Println("help/usage message: To run this program, please pass an argument to it,i.e.: go run urlChecker.go urls.txt")
+	} else {
+
+		content, err := ioutil.ReadFile(os.Args[1])
+		if err != nil {
+			log.Fatal(err)
+
+		}
+
+		textContent := string(content)
+
+		fmt.Println("UrlChecker is working now! ")
+		fmt.Println("--------------------------------------------------------------------------------")
+
+		checkURL(extractURL(textContent))
 
 	}
-
-	textContent := string(content)
-
-	fmt.Println("UrlChecker is working now! ")
-	fmt.Println("--------------------------------------------")
-
-	checkURL(extractURL(textContent))
-
 }
