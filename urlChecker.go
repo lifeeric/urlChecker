@@ -70,7 +70,7 @@ func main() {
 	} else {
 		//feature of checking version
 		if string(os.Args[1]) == "-v" || string(os.Args[1]) == "-version" || string(os.Args[1]) == "/v" {
-			fmt.Println("*****urlChecker Version 0.1*****")
+			fmt.Println("  *****  urlChecker Version 0.1  *****  ")
 		} else {
 			//use for loop to deal with multiple file paths
 			i := 1
@@ -83,7 +83,7 @@ func main() {
 				}
 				textContent := string(content)
 
-				fmt.Println(">>  UrlChecker is working now!  <<")
+				fmt.Println(">>  ***** UrlChecker is working now...... *****  <<")
 				fmt.Println("--------------------------------------------------------------------------------------------------")
 				//call functions to check the availability of each url
 				checkURL(extractURL(textContent))
